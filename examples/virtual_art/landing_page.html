@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+	<script type="text/javascript" src="../../assets/js/lib/jquery.min.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/lib/gsap3/gsap.min.js"></script>
+	<script type="text/javascript" src="../../scrollmagic/uncompressed/ScrollMagic.js"></script>
+	<script type="text/javascript" src="../../scrollmagic/uncompressed/plugins/animation.gsap.js"></script>
+	<script type="text/javascript" src="../../scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
+	<style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+        #trigger_start{
+        	position: absolute;
+        	width:100%;
+/*        	height:30px;*/
+        }
+        #background{
+        	/*position: fixed;
+        	top:-800px;
+        	left:-800px;*/
+        	z-index: 1;
+        }
+        #scroller{
+        	position:absolute;
+        	width:3500px;
+        	height:3500px;
+        	z-index: 2;
+        }
+        .view_window {
+            height: 100vh;
+            width: 100%;
+            overflow-y: scroll;
+            /*overflow-x: hidden;*/
+            position: relative;
+            z-index: 3;
+        }
+        .center-fit {
+            margin: auto;
+            /*transform: rotate(90deg);*/
+        }
+
+        .view_window::-webkit-scrollbar {
+  			display: none;
+		}
+	</style>
+
+	<script type="text/javascript">
+		$( document ).ready(function() {
+
+			var win_h = $(window).height();
+			var win_w = $(window).width();
+
+			var bg_h = $("#background").height();
+			var bg_w = $("#background").width();
+			$("#view_window").scrollTop((bg_h - win_h)/2);
+			$("#view_window").scrollLeft((bg_w - win_w)/2);
+			$("#scroller").css("height",bg_h+"px");
+			$("#scroller").css("width",bg_w+"px");
+			$("#background").css("top", -1*(bg_h - win_h)/2 + "px");
+			$("#background").css("left", -1*(bg_w - win_w)/2 + "px");
+			$("#background").css("position", "fixed");
+			$("#trigger_start").css("top", (bg_h/2)+"px");
+
+    		var controller = new ScrollMagic.Controller({container: "#view_window"});
+    		var tween = TweenMax.to("#background", 1, {rotation: 90, ease: Linear.easeNone});
+    		var scene_h = new ScrollMagic.Scene({duration: 150, triggerElement:"#trigger_start"})
+						.setTween(tween)
+						.triggerHook(0.33)
+						// .setPin("#background")
+						.addIndicators({name: "rotate"}) // add indicators (requires plugin)
+						.addTo(controller);
+		});
+	</script>
+</head>
+
+<body>
+	
+	<div id="view_window" class="view_window">
+		<div id="trigger_start"></div>
+		<div id="scroller"></div>
+		<img id="background" class="center-fit" src="test2.png">
+		<!-- <div id="test_fixed"></div> -->
+	</div>
+</body>
+</html>
