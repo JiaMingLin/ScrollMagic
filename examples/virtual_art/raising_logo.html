@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html class="no-js" lang="en">
+
+<head>
+	<script type="text/javascript" src="../../assets/js/lib/jquery.min.js"></script>
+
+	<script type="text/javascript" src="../../assets/js/lib/gsap3/gsap.min.js"></script>
+	<script type="text/javascript" src="../../scrollmagic/uncompressed/ScrollMagic.js"></script>
+	<script type="text/javascript" src="../../scrollmagic/uncompressed/plugins/animation.gsap.js"></script>
+	<script type="text/javascript" src="../../scrollmagic/uncompressed/plugins/debug.addIndicators.js"></script>
+<!-- 	<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/2.1.3/TweenLite.min.js"></script> -->
+
+	<style type="text/css">
+		.view_window {
+            height: 100vh;
+            width: 100%;
+            overflow-y: scroll;
+            /*overflow-x: hidden;*/
+            position: relative;
+            z-index: 1;
+           
+        }
+
+        #rectangle{
+        	width:50px;
+        	height:50px;
+        	background-color: #aaaaaa;
+        	display: inline-block;
+        }
+
+        #raising_container{
+        	height:100vh;
+        	width:100%;
+        	position: fixed;
+        	z-index: 2;
+        	text-align: center;
+        }
+        #raising_black{
+        	width:45%;
+        	display: inline-block;
+        	position:absolute;
+        	opacity: 0;
+        	/*position:absolute;*/
+        }
+        #raising_logo{
+        	width:45%;
+			/*position:relative;*/
+        	display: inline-block;
+        	/*position:fixed;*/
+        	opacity: 0;	
+        }
+
+        #scroller{
+        	height:3500px;
+        	width:100%;
+        	position: absolute;
+        	z-index: 3;
+        }
+
+	</style>
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			var wh = $(window).height();
+			console.log("window_height: "+wh);
+			var logo_height = $("#raising_black").height();
+			$("#raising_black").css("margin-top", (wh-logo_height)+"px");
+			$("#raising_logo").css("margin-top", (wh-2*logo_height)/2+"px");
+
+			var controller = new ScrollMagic.Controller({container: "#view_window"});
+			
+			var tween_black = TweenMax.to("#raising_black", 1, {
+    			y: -wh/2,
+    			"opacity":1
+    			// backgroundColor: 'blue'
+			});
+			var tween_hide_black = TweenMax.to("#raising_black", 1, {
+    			"opacity":0
+    			// backgroundColor: 'blue'
+			});
+			var tween_logo_appear = TweenMax.to("#raising_logo", 1, {
+    			"opacity":1
+    			// backgroundColor: 'blue'
+			});
+
+			// var tween_logo_appear = TweenMax.to("#raising_logo", 2, {
+   //  			"opacity":1
+   //  			// backgroundColor: 'blue'
+			// });
+			// var tween_black_hide = TweenMax.to("#raising_black", 2, {
+   //  			"opacity":0
+   //  			// backgroundColor: 'blue'
+			// });
+
+			var scene_raise_black = new ScrollMagic.Scene({duration: 600})
+						.setTween(tween_black)
+						// .triggerHook(0.33)
+						// .setPin("#background")
+						.addIndicators({name: "raising_black"}) // add indicators (requires plugin)
+						.addTo(controller);
+			var scene_hide_black = new ScrollMagic.Scene({duration: 600, offset: 600})
+						.setTween(tween_hide_black)
+						// .triggerHook(0.33)
+						// .setPin("#background")
+						.addIndicators({name: "hide_black"}) // add indicators (requires plugin)
+						.addTo(controller);
+			var scene_logo_appear = new ScrollMagic.Scene({duration: 600, offset: 600})
+						.setTween(tween_logo_appear)
+						// .triggerHook(0.33)
+						// .setPin("#background")
+						.addIndicators({name: "appear_logo"}) // add indicators (requires plugin)
+						.addTo(controller);
+
+			// var scene_hide_black = new ScrollMagic.Scene({duration: 300})
+			// 			.setTween(tween_black_hide)
+			// 			// .triggerHook(0.33)
+			// 			// .setPin("#background")
+			// 			.addIndicators({name: "hide"}) // add indicators (requires plugin)
+			// 			.addTo(controller);
+			// var scene_appear_logo = new ScrollMagic.Scene({duration: 300})
+			// 			.setTween(tween_logo_appear)
+			// 			// .triggerHook(0.33)
+			// 			// .setPin("#background")
+			// 			.addIndicators({name: "appear"}) // add indicators (requires plugin)
+			// 			.addTo(controller);
+		});
+	</script>
+</head>
+
+<body>
+
+<div id="view_window" class="view_window">
+	<div id="scroller"></div>
+	<div id="raising_container">
+		<!-- <div id="raising_black"></div>
+		<div id="raising_logo"></div> -->
+		<img id="raising_black" src="raising_black.png">
+		<img id="raising_logo" src="raising_logo.png">
+	</div>
+	<!-- <div id="rectangle"></div> -->
+</div>
+
+</body>
